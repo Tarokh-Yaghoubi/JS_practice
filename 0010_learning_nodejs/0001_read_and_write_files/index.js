@@ -9,6 +9,7 @@ const path = require('path')
 // if no encoding is specified, then the raw buffer is returned.
 
 let writeData = "\nFirst Line I Wrote To The File\n"
+let writeToStarter = "Hi, tarokh is here, we are going to start node.\n"
 
 // reading passwd does not need super user privilege, so we are good
 // fs.readFile('/etc/passwd', 'utf-8', (err, data) => {
@@ -46,8 +47,6 @@ fs.writeFile(path.join(__dirname, "reply.txt"), writeData, (err) => {
             if (err) throw err
             console.log("Renamed Successfully")
         })
-    
-
     })
 
 })
@@ -57,9 +56,10 @@ fs.writeFile(path.join(__dirname, "reply.txt"), writeData, (err) => {
 
 const fileOps = async () => {
     try {
+
         const data = await fsPromises.readFile('starter.txt', 'utf-8')
         console.log(data)
-        await fsPromises.unlink(path.join(__dirname, "starter.txt"))        // this will delete the file
+        // await fsPromises.unlink(path.join(__dirname, "starter.txt"))        // this will delete the file
         await fsPromises.writeFile(path.join(__dirname, "reply.txt"), data)
         await fsPromises.appendFile(path.join(__dirname, "reply.txt"), writeData)
         await fsPromises.rename(path.join(__dirname, "reply.txt"), path.join(__dirname, "newReply.txt"))
@@ -76,16 +76,18 @@ fileOps();
 
 
 
-
-
 // we can exit if the program meets uncaught Errors using "process"
 // The process object provides information about, and control over, the current node js process.
 
 // console.log("----------------------------------------")
 // console.log(process) - we can log the process object - it is very big
 
+process.on('exit', (code) => {
+    console.log(`About to exit the application ${code}`)
+})
+
+
 process.on('uncaughtException', err => {
     console.log(`There was an uncaught error : ${err}`)
     process.exit(1)
 })
-
