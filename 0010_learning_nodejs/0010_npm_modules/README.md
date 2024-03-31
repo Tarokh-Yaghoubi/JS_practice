@@ -20,7 +20,7 @@ In addition to the commonly used npm commands mentioned earlier, there are sever
 - `npm i <package_name>@[version to be installed]`: This will install a specific version of the package.
 - `npm i <package_name> -D`: Install the package as a dev dependency.
 - `npm update`: Check for updates and Update your packages.
-- `npm [uninstall | un | rm] <package_name> [-g if global] [-D if the pack is dev-dep]`: remove a package from project.
+- `npm [uninstall | un | rm] [-g if global] [-D if the pack is dev-dep] <package_name>`: remove a package from project.
 - `npm outdated`: Check for outdated dependencies in your project and see which ones can be updated to newer versions.
 - `npm prune`: Remove extraneous packages that are not listed as dependencies in the `package.json` file.
 - `npm dedupe`: Reduce duplication of packages in the `node_modules` directory by optimizing the dependency tree.
