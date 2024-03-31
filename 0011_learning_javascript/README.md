@@ -16,25 +16,22 @@ Discover the built-in Math object in JavaScript and learn how to perform mathema
 ### 4. Ternary Operator
 Explore the ternary operator as a concise alternative to if-else statements for conditional expressions.
 
-### 5. User Input
-Discover methods for accepting user input in JavaScript applications, including reading from the console and handling user interactions in web applications.
-
-### 6. Functions
+### 5. Functions
 Understand the fundamentals of functions in JavaScript, including function declarations, expressions, parameters, return values, and scope.
 
-### 7. Arrays
+### 6. Arrays
 Explore arrays, one of the most commonly used data structures in JavaScript, including array methods for manipulation and iteration.
 
-### 8. Objects
+### 7. Objects
 Understand objects in JavaScript, including object literals, properties, methods, and object-oriented programming concepts.
 
-### 9. Classes
+### 8. Classes
 Discover how to use classes in JavaScript for object-oriented programming, including class definitions, constructors, methods, and inheritance.
 
-### 10. JSON
+### 9. JSON
 Learn about JSON (JavaScript Object Notation) and how to work with JSON data in JavaScript for data interchange.
 
-### 11. Error Handling
+### 10. Error Handling
 Understand error handling techniques in JavaScript, including try-catch blocks for handling exceptions and handling asynchronous errors.
 
 ## Getting Started
