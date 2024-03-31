@@ -1,0 +1,19 @@
+{
+  "name": "0010_npm_modules",
+  "version": "1.0.0",
+  "description": "This README provides an overview of Node.js modules and instructions on how to install them using npm (Node Package Manager), along with commonly used npm commands for managing dependencies and working with Node.js projects.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "author": "Tarokh",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^3.6.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
