@@ -136,3 +136,288 @@ Users.prototype.greet = function () {
 let user2 = new Users("tarokh")
 user2.greet();
 
+// The result of this definition is the same.
+// But are classes a bunch of syntactic sugars ?
+// Still, there are important differences:
+
+// 1 - a function created by 'class' is labelled by a special internal property [[IsClassConstructor]]:
+// true. So it is not entirely the same as creating it manually
+// The language checks for that property in a variety of places. For example, unline regular functions, it must be called with new:
+
+class Student {
+    constructor(student_name) {
+        this.student_name = student_name;
+    }
+    
+    getName() {
+        return this.student_name;
+    }
+}
+
+console.log(typeof Student);
+console.log(Student)
+// Student();      // Error: Class constructor Student cannot be invoked without 'new'
+
+// 2 - Classes always 'use strict'. All code inside the class construct is automatically in strict mode.
+
+
+// CLASS EXPRESSIONS
+
+let Programmer = class {
+    constructor(language) {
+        this.programming_language = language;
+    }
+
+
+    ['echo' + 'Lang']() {       // computed method
+        console.log(this.programming_language);
+    }
+
+    getLang() {
+        console.log(`The programming language used by this user is --->>> ${this.programming_language}`);
+    }
+
+}
+
+// if a class expression has a name, it is only visible inside the class.
+
+new Programmer("C").getLang();  // this works fine
+new Programmer("JavaScript").echoLang();
+
+// we can even make classes dynamically like this:
+
+function makeClass(quote) {
+    // declare a class and return it 
+
+    return class {
+        echo() {
+            console.log(`The quote is:\n${quote}`)
+        }
+    }
+}
+
+let MakeClass = makeClass("the only true wisdom is in knowing you know nothing\nThe more I know, the more I realies I know nothing.")
+let user4 = new MakeClass();
+user4.echo();
+
+
+
+// GETTERS AND SETTERS
+// just like literal objects, classes may include getters/setters
+
+class Credentials {
+    constructor(username, password) {
+        // invokes the setter
+        this.username = username;       // this.username is invoking the setter method
+        this.password = password;       // this.password is invoking the setter method
+    }
+
+    set username(value) {
+        this._username = value;
+    }
+
+    get username() {
+        return this._username;
+    }
+
+    set password(value) {
+        if (value.language < 4) {
+            console.log("password is too short");
+            return;
+        }
+
+        this._password = value;
+    }
+
+    get password() {
+        return this._password;
+    }
+
+}
+
+let cred = new Credentials("tarokh", "tarokh0010");
+console.log(cred.username);
+console.log(cred.password);
+
+// _ (UNDER_SCORE) is a naming convention in JavaScript and many other languages that indicates that a property is
+// intended to be private or internal to a class and developers should not directly access or modify these properties
+// from outside the class.
+
+// "Class fields" is a syntax that allows to add any properties to the class
+// This is not supported in old-browsers
+
+class AddProp {
+    first_prop = "jesus"
+    second_prop = "carrot"
+
+    echoFirst() {
+        console.log(this.first_prop);
+    }
+
+    echoSecond() {
+        console.log(this.second_prop);
+    }
+}
+// The important difference of class fields is that they are set on individual objects, not User.prototype:
+
+let addProp = new AddProp();
+console.log(addProp.first_prop);                // this is jesus
+console.log(AddProp.prototype.first_prop);      // this is undefined
+
+
+// Functions in JavaScript have a dynamic 'this'.
+// If an object method is passed around and called in another context, "this" wont be a reference to its object anymore.
+
+class Button {
+    constructor(value) {
+        this.value = value;
+    }
+
+    click() {
+        console.log(this.value);
+    }
+}
+
+let button = new Button("ShutDown");
+
+// setTimeout(button.click(), 1000);   // undefined, because 'this' is lost.
+// this problem is called "losing this"
+
+// There are two approaches to fixing it:
+// 1 - pass a wrapper-function:
+
+// setTimeout(() => button.click(), 1000).
+
+// 2 - Bind the method to object. Class fields provide another syntax
+
+class Button1 {
+    constructor(value) {
+        this.value = value;
+    }
+
+    click = () => {
+        console.log(this.value)
+    }
+}
+
+let but = new Button1("ByeBye");
+setTimeout(but.click, 1000);
+
+
+// The class field click = () => {...} is created on a per-object basis
+// There is a separate function for each Button object, with "this" inside it referencing that object.
+// we can pass but.click around anywhere, and the value of "this" will always be correct.
+
+
+// THAT IS ESPECIALLY USEFUL IN BROWSER ENVIRONMENT, FOR EVENT LISTENERS.
+
+
+class BankAccount {
+    constructor(accountHolder, initialBalance) {
+        this.accountHolder = accountHolder;
+        this.balance = initialBalance;
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+        console.log(`Deposite ${amount} into ${this.accountHolder}'s account, Current Balance: ${this.balance}`);
+    }
+
+    withdraw(amount) {
+        if (amount <= this.balance) {
+            this.balance -= amount;
+            console.log(`Withdraw ${amount} from ${this.accountHolder}'s account, Current Balance: ${this.balance}`);
+        } else {
+            console.log(`Insufficient balance. Current Balance: ${this.balance}`);
+        }
+    }
+
+    getBalance() {
+        return this.balance;
+    }
+
+    getAccountHolder() {
+        return this.accountHolder;
+    }
+
+    setAccountHolder(firstname) {
+        this.accountHolder = firstname;
+        console.log(`account holders name updated to ${this.accountHolder}`)
+    }
+
+}
+
+let account = new BankAccount("Tarokh", 10000);
+console.log(account.getBalance());
+console.log(account.getAccountHolder());
+account.deposit(200);
+account.withdraw(400);
+
+class BankAccount2 {
+    constructor(accountNumber, accountHolderName, balance = 0) {
+        this._accountNumber = accountNumber
+        this._accountHolderName = accountHolderName
+        this._balance = balance
+    }
+
+    // getter and setter for account number
+
+    get accountNumber() {
+        return this._accountNumber
+    }
+
+    set accountNumber(value) {
+        this._accountNumber = value
+    }
+
+    // Getter and setter for account holder name
+
+    get accountHolderName() {
+        return this._accountHolderName
+    }
+
+    set accountHolderName(value) {
+        this._accountHolderName = value
+    }
+
+    // Getter and setter for balance
+
+    get balance() {
+        return this._balance
+    }
+
+    set balance(value) {
+        this._balance = value
+    }
+
+    deposit(amount) {
+        if (amount > 0) {
+            this._balance += amount
+            console.log(`Deposit of $${amount} successful, Current Balance ${this._balance}`)
+        } else {
+            console.log("Invalid amount for deposit")
+        }
+    }
+
+    withdraw(amount) {
+        if (amount > 0 && amount <= this._balance) {
+            this._balance -= amount
+            console.log(`Withdrawal of $${amount} successful, Current Balance ${this._balance}`)
+        } else {
+            console.log("Insufficient funds or invalid amount for withdrawal")
+        }
+    }
+
+    displayInfo() {
+        console.log(`Account Number ${this._accountNumber}`)
+        console.log(`Account Holder Name ${this._accountHolderName}`)
+        console.log(`Balance ${this._balance}`)
+    }
+}
+
+const account1 = new BankAccount2(1, "Tarokh", 20000)
+account1.displayInfo()
+account1.deposit(1000)
+account1.displayInfo()
+account1.withdraw(100)
+account1.displayInfo()
