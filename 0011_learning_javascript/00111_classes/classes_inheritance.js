@@ -120,10 +120,113 @@ class Tarokh extends People {
     // calling stop of People, and adding more functionality.
     stop() {
         super.stop()
+        console.log(`The stop in class Tarokh does more things, such as sitting down`)
         this.sit()
     }
 }
 
 let me = new Tarokh("Tarokh", "Yaghoubi");
 me.stop();
+
+// Now Tarokh has the stop method that calls the parent super.stop() in the process
+
+
+// OVERRIDING CONSTRUCTOR
+
+// Until now, the child class did not have its own constructor.
+
+// if a class extends another class and has no constructor, then the following empty constructor is generated
+
+function makeClass() {
+    class Tarokh extends People {
+
+        // generating for extending classes without own constructors
+        constructor(...args) {
+            super(...args)
+        }
+    }
+
+    return Tarokh;
+}
+
+// let Tarokh1 = makeClass()
+// let tarokh2 = new Tarokh1("tarokh", "jacobi");
+// console.log(`the lastname of the class returned from the Function is ---->>> ${tarokh2.lastname}`)
+
+function makeClassOwnConstructor() {
+    class Tarokh extends People {
+        constructor(firstname, lastname, programmingLang) {
+            super(firstname, lastname);
+            this._lang = programmingLang;
+        }
+
+        set programmingLang(value) {
+            this._lang = value;
+        }
+
+        get programmingLang() {
+            return this._lang;
+        }
+
+        display() {
+            console.log(`firstname -> ${thi._firstname}\tlastname -> ${this._lastname}\tprogramming language -> ${this._lang}`)
+        }
+    }
+
+    return Tarokh;
+}
+
+let Tarokh3 = makeClassOwnConstructor();
+let tarokh4 = new Tarokh3("John", "Smith", "Pascal")
+tarokh4.walk();
+console.log(`firstname and programming language is ->  ${tarokh4.firstname} ${tarokh4.programmingLang}`)
+
+
+// We can override not only methods, but also class fields.
+
+class Cats {
+    name = "cat"
+    color = "brown"
+
+    constructor() {
+        console.log(this.name)
+    }
+}
+
+class Garphield extends Cats {
+    // this will not override the property "name" in Cats
+    name = "Garphield"
+
+}
+
+
+// name is still cats 
+new Garphield()
+
+
+// but when we use methods ...
+
+class Dogs {
+    name = "animal"
+    color = "any"
+
+    showName() {
+        console.log(this.name)
+    }
+
+    constructor() {
+        this.showName()
+    }
+}
+
+class American extends Dogs {
+    showName() {
+        console.log("Kevin")
+    }
+}
+
+new Dogs();
+new American();
+// now American class will print Kevin  
+
 
