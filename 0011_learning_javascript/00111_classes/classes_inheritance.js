@@ -230,3 +230,35 @@ new American();
 // now American class will print Kevin  
 
 
+
+// [[HomeObject]]
+// When a function is specified as a class or object method, its [[HomeObject]] property becomes that object.
+// Then 'super' uses it to resolve the parent prototype and its methods.
+
+let anotherAnimal = {
+    name: "Animal",
+    eat() {     // animal.eat.[[HomeObject]] == animal
+        console.log(`${this.name} eats`);
+    }
+};
+
+
+let jaguar = {
+
+    __proto__: anotherAnimal,
+    name: "Jaguar",
+    eat() {     // jaguar.eat.[[HomeObject]] == jaguar
+        super.eat();
+    }
+};
+
+let strippy = {
+    __proto__: jaguar,
+    name: "Strippy",
+    eat() {     // strippy.eat.[[HomeObject]] == strippy
+        super.eat();
+    }
+};
+
+strippy.eat();  // Strippy eats
+
